@@ -1,2 +1,3 @@
 .vscode/
 my-project-venv/
+__pycache__
