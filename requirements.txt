@@ -1,0 +1,4 @@
+RPi.GPIO
+picamera
+opencv-python
+Encoder
