@@ -15,7 +15,8 @@ servo.start(1.5/20)
 try:
     while True:
         print(enc.read(), GPIO.input(encPins[2]))
-        servo.ChangeDutyCycle(abs(enc.read()) % 500 / 100 + 5)
+        #servo.ChangeDutyCycle(abs(enc.read()) % 500 / 100 + 5)
+        servo.ChangeDutyCycle(abs(enc.read()) // 10 % 100)
         #print(20 * (abs(enc.read()) % 500 / 100 + 5) / 100)
         time.sleep(0.001)
         
