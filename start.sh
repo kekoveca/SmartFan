@@ -1,0 +1,1 @@
+/home/pi/Desktop/Repositories/Project/my-project-venv/bin/python /home/pi/Desktop/Repositories/Project/src/main.py
