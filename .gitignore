@@ -1,3 +1,4 @@
 .vscode/
 my-project-venv/
 __pycache__
+src/__pycache__
