@@ -26,8 +26,7 @@ class Fan:
         self.camera = PiCamera()
         self.camera.resolution = (640, 480)
         self.camera.framerate = 32
-        self.classifier = cv2.CascadeClassifier('src/haarcascade_frontalface_default.xml')
-        #self.classifier = cv2.CascadeClassifier('src/faces.xml')
+        self.classifier = cv2.CascadeClassifier(settings.PATH_TO_CLSSR)           
     
     def start(self):
         self.big_servo.start()
@@ -93,8 +92,8 @@ class Fan:
                 prev_error = error
 
 	        # show the frame
-            cv2.imshow("Frame", image)
-            key = cv2.waitKey(1) & 0xFF
+            #cv2.imshow("Frame", image)
+            #key = cv2.waitKey(1) & 0xFF
 
 	        # clear the stream in preparation for the next frame
             rawCapture.truncate(0)
