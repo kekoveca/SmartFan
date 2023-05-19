@@ -24,7 +24,7 @@ class Fan:
         GPIO.add_event_detect(settings.ENC_PINS["key"], GPIO.FALLING, callback=self.ChangeState, bouncetime=100)
         self.state = 0  # 0 - nothing, 1 - following
         self.camera = PiCamera()
-        self.camera.resolution = (640, 480)
+        self.camera.resolution = (640, 640)
         self.camera.framerate = 32
         self.classifier = cv2.CascadeClassifier(settings.PATH_TO_CLSSR)           
     
@@ -36,9 +36,9 @@ class Fan:
         horiz_pid, horiz_int = 0, 0
         vert_pid, vert_int   = 0, 0
         erro, prev_error     = (0, 0), (0, 0)
-        target = (320, 240)
+        target = (320, 320)
 
-        rawCapture = PiRGBArray(self.camera, size=(640, 480))
+        rawCapture = PiRGBArray(self.camera, size=(640, 640))
 
         # allow the camera to warmup
         time.sleep(0.1)
@@ -48,6 +48,7 @@ class Fan:
             self.camera.capture(rawCapture, format="bgr", use_video_port=True)
 
             image = rawCapture.array
+            image = cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE)
 
             # faces recognition
             bboxes = self.classifier.detectMultiScale(image)
@@ -85,21 +86,21 @@ class Fan:
 
                 if self.state == 1:
                     #print(error[0], error[1])
-                    print(horiz_pid, vert_pid)
+                    #print(horiz_pid, vert_pid)
                     self.big_servo.setPulse((horiz_pid + 1000) /  1000)
-                    self.big_servo.setPulse((horiz_pid + 1000) /  1000)
+                    self.small_servo.setPulse((vert_pid + 1000) /  1000)
 
                 prev_error = error
 
 	        # show the frame
-            #cv2.imshow("Frame", image)
-            #key = cv2.waitKey(1) & 0xFF
+            cv2.imshow("Frame", image)
+            key = cv2.waitKey(1) & 0xFF
 
 	        # clear the stream in preparation for the next frame
             rawCapture.truncate(0)
 
             # motor rotation speed reguation
-            self.motor.setPulse(self.enc.read() // 10 * 2)
+            self.motor.setPulse(self.enc.read() // 10)
 
 
     def ChangeState(self, channel):
